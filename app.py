@@ -59,10 +59,10 @@ def draw_sankey(df, source, target, value, remove_labels):
         flow_color_mode=st.session_state.flow_color_mode,
         node_opts=dict(
             label_format='{label}',
-            label_opts={"fontsize": st.session_state.font_size, "ha": "right"}
+            label_opts={"fontsize": st.session_state.font_size}
         ) if remove_labels else dict(
             label_format='{label} - {value}', 
-            label_opts={"fontsize": st.session_state.font_size, "ha": "right"}
+            label_opts={"fontsize": st.session_state.font_size}
         ),
         flow_opts={"curvature": st.session_state.curvature / 10.0},
     )
