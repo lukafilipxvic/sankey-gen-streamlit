@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
 from sankeyflow import Sankey
+from matplotlib import rcParams
 
 st.set_page_config(layout="wide", page_title="Sankey Diagram Generator")
 st.title("Sankey Diagram Generator")
@@ -28,7 +29,7 @@ st.sidebar.number_input("Curviness", 0, 10, 3, 1, key="curvature")
 st.sidebar.selectbox(
     "Color Palette",
     index=0,
-    options=["tab10", "tab20", "Pastel1", "Pastel2", "Set1", "Set2", "Set3"],
+    options=["tab10", "tab20", "Pastel1", "Pastel2", "Set1", "Set2", "Set3", "Oranges", "plasma", "autumn"],
     key="color",
 )
 st.sidebar.selectbox("Flow Color Mode", index=0, options=["source", "dest"], key="flow_color_mode")
@@ -48,14 +49,22 @@ def load_demo_df():
 
 def draw_sankey(df, source, target, value, remove_labels):
     flows = list(df[[source, target, value]].itertuples(index=False, name=None))
-    # remove empty and nan values
+    # Remove empty and nan values
     flows_clean = [x for x in flows if x[0] and x[1] and x[2] > 0]
-
+    
+    # Set the font to Arial
+    rcParams['font.family'] = 'Arial'
+    
     diagram = Sankey(
         flows=flows_clean,
         cmap=plt.get_cmap(st.session_state.color),
         flow_color_mode=st.session_state.flow_color_mode,
-        node_opts=dict(label_format='{label}') if remove_labels else {"label_opts": {"fontsize": st.session_state.font_size}},
+        node_opts=dict(
+            label_format='{label}',
+            label_opts={"fontsize": st.session_state.font_size, "ha": "right"}
+            ) if remove_labels else dict(
+            label_format='{label} - {value}', "label_opts": {"fontsize": st.session_state.font_size, "ha": "right"}
+        ),
         flow_opts={"curvature": st.session_state.curvature / 10.0},
     )
 
