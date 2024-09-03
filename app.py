@@ -39,9 +39,9 @@ st.sidebar.markdown("**[Blog Post](https://thiagoalves.ai/sankey-streamlit/)**")
 def load_demo_df():
     st.session_state.df = pd.DataFrame(
         {
-            "source": ["Product", "Service and other", "Total revenue", "Total revenue"],
-            "target": ["Total revenue", "Total revenue", "Gross margin", "Cost of revenue"],
-            "value": [20779, 30949, 34768, 10000],
+            "Col 1": ["Product", "Service and other", "Total revenue", "Total revenue"],
+            "Col 2": ["Total revenue", "Total revenue", "Gross margin", "Cost of revenue"],
+            "Value": [20779, 30949, 34768, 10000],
         }
     )
 
@@ -61,7 +61,7 @@ def draw_sankey(df, source, target, value, remove_labels):
 
     if remove_labels:
         for node in diagram.nodes:
-            node.opts['label_opts']['showvalue'] = False
+            node_opts=dict(label_format=None)
 
     _, col2, _ = st.columns([1, 7, 1])
     with col2:
@@ -110,7 +110,7 @@ if source_col and target_col and value_col:
     )
 
     sankey_placeholder = st.empty()
-    draw_sankey(edited_df, source_col, target_col, value_col)
+    draw_sankey(edited_df, source_col, target_col, value_col, remove_labels)
 
     if "image" in st.session_state and st.session_state.image:
         download_button_placeholder.download_button(
