@@ -1,5 +1,3 @@
-"""This module contains code for creating a dynamic Sankey diagram using Streamlit."""
-
 import io
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -62,8 +60,9 @@ def draw_sankey(df, source, target, value, remove_labels):
         node_opts=dict(
             label_format='{label}',
             label_opts={"fontsize": st.session_state.font_size, "ha": "right"}
-            ) if remove_labels else dict(
-            label_format='{label} - {value}', label_opts: {"fontsize": st.session_state.font_size, "ha": "right"}
+        ) if remove_labels else dict(
+            label_format='{label} - {value}', 
+            label_opts={"fontsize": st.session_state.font_size, "ha": "right"}
         ),
         flow_opts={"curvature": st.session_state.curvature / 10.0},
     )
