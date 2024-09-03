@@ -55,7 +55,7 @@ def draw_sankey(df, source, target, value, remove_labels):
         flows=flows_clean,
         cmap=plt.get_cmap(st.session_state.color),
         flow_color_mode=st.session_state.flow_color_mode,
-        node_opts={"label_opts": {"fontsize": 0}} if remove_labels else {"label_opts": {"fontsize": st.session_state.font_size}},
+        node_opts=dict(label_format='{label}') if remove_labels else {"label_opts": {"fontsize": st.session_state.font_size}},
         flow_opts={"curvature": st.session_state.curvature / 10.0},
     )
 
