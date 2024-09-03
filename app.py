@@ -34,7 +34,7 @@ st.sidebar.selectbox(
 st.sidebar.selectbox("Flow Color Mode", index=0, options=["source", "dest"], key="flow_color_mode")
 remove_labels = st.sidebar.checkbox("Remove Numbers", value=False)
 st.sidebar.markdown("---")  # Horizontal line
-st.sidebar.markdown("**[Blog Post](https://thiagoalves.ai/sankey-streamlit/)**")  # Bold text
+st.sidebar.markdown("**[Luka Filipovic](https://lukafilipovic.com/)**")  # Bold text
 
 def load_demo_df():
     st.session_state.df = pd.DataFrame(
