@@ -1,7 +1,6 @@
 """This module contains code for creating a dynamic Sankey diagram using Streamlit."""
 
 import io
-
 import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
@@ -12,8 +11,17 @@ st.title("Sankey Diagram Generator")
 
 st.sidebar.title("Sankey Diagram")
 uploaded_file = st.sidebar.file_uploader("Choose a CSV file", type="csv")
+
 if uploaded_file is not None:
     st.session_state.df = pd.read_csv(uploaded_file)
+
+if "df" in st.session_state:
+    columns = st.session_state.df.columns.tolist()
+    source_col = st.sidebar.selectbox("Select Source Column", columns, index=0, key="source_col")
+    target_col = st.sidebar.selectbox("Select Target Column", columns, index=1, key="target_col")
+    value_col = st.sidebar.selectbox("Select Value Column", columns, index=2, key="value_col")
+else:
+    source_col, target_col, value_col = None, None, None
 
 st.sidebar.number_input("Font Size", 5, 20, 10, 1, key="font_size")
 st.sidebar.number_input("Curviness", 0, 10, 3, 1, key="curvature")
@@ -24,6 +32,7 @@ st.sidebar.selectbox(
     key="color",
 )
 st.sidebar.selectbox("Flow Color Mode", index=0, options=["source", "dest"], key="flow_color_mode")
+remove_labels = st.sidebar.checkbox("Remove Count Numbers", value=False)
 st.sidebar.markdown("---")  # Horizontal line
 st.sidebar.markdown("**[Blog Post](https://thiagoalves.ai/sankey-streamlit/)**")  # Bold text
 
@@ -37,8 +46,8 @@ def load_demo_df():
     )
 
 
-def draw_sankey(df):
-    flows = list(df[["source", "target", "value"]].itertuples(index=False, name=None))
+def draw_sankey(df, source, target, value, remove_labels):
+    flows = list(df[[source, target, value]].itertuples(index=False, name=None))
     # remove empty and nan values
     flows_clean = [x for x in flows if x[0] and x[1] and x[2] > 0]
 
@@ -49,6 +58,11 @@ def draw_sankey(df):
         node_opts={"label_opts": {"fontsize": st.session_state.font_size}},
         flow_opts={"curvature": st.session_state.curvature / 10.0},
     )
+
+    if remove_labels:
+        for node in diagram.nodes:
+            node.opts['label_opts']['showvalue'] = False
+
     _, col2, _ = st.columns([1, 7, 1])
     with col2:
         diagram.draw()
@@ -70,7 +84,6 @@ def timestamp():
 if "df" not in st.session_state:
     load_demo_df()
 
-
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
@@ -87,23 +100,22 @@ with col3:
 with col4:
     download_button_placeholder = st.empty()
 
-edited_df = st.data_editor(
-    st.session_state.df,
-    key="demo_df",
-    num_rows="dynamic",
-    use_container_width=True,
-    hide_index=True,
-)
-
-
-sankey_placeholder = st.empty()
-
-draw_sankey(edited_df)
-
-if "image" in st.session_state and st.session_state.image:
-    download_button_placeholder.download_button(
-        "Download Diagram",
-        data=st.session_state.image,
-        file_name=f"sankey-{timestamp()}.png",
-        mime="image/png",
+if source_col and target_col and value_col:
+    edited_df = st.data_editor(
+        st.session_state.df,
+        key="demo_df",
+        num_rows="dynamic",
+        use_container_width=True,
+        hide_index=True,
     )
+
+    sankey_placeholder = st.empty()
+    draw_sankey(edited_df, source_col, target_col, value_col, remove_labels)
+
+    if "image" in st.session_state and st.session_state.image:
+        download_button_placeholder.download_button(
+            "Download Diagram",
+            data=st.session_state.image,
+            file_name=f"sankey-{timestamp()}.png",
+            mime="image/png",
+        )
