@@ -61,7 +61,7 @@ def draw_sankey(df, source, target, value, remove_labels):
 
     if remove_labels:
         for node in diagram.nodes:
-            node_opts=dict(label_format=None)
+            node_opts=dict(label_format='{label} ${value:.2f}')
 
     _, col2, _ = st.columns([1, 7, 1])
     with col2:
