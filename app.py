@@ -32,7 +32,7 @@ st.sidebar.selectbox(
     key="color",
 )
 st.sidebar.selectbox("Flow Color Mode", index=0, options=["source", "dest"], key="flow_color_mode")
-remove_labels = st.sidebar.checkbox("Remove Count Numbers", value=False)
+remove_labels = st.sidebar.checkbox("Remove Numbers", value=False)
 st.sidebar.markdown("---")  # Horizontal line
 st.sidebar.markdown("**[Blog Post](https://thiagoalves.ai/sankey-streamlit/)**")  # Bold text
 
@@ -110,7 +110,7 @@ if source_col and target_col and value_col:
     )
 
     sankey_placeholder = st.empty()
-    draw_sankey(edited_df, source_col, target_col, value_col, remove_labels)
+    draw_sankey(edited_df, source_col, target_col, value_col)
 
     if "image" in st.session_state and st.session_state.image:
         download_button_placeholder.download_button(
