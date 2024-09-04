@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
 from sankeyflow import Sankey
-from matplotlib import rcParams
 
 st.set_page_config(layout="wide", page_title="Sankey Diagram Generator")
 st.title("Sankey Diagram Generator")
@@ -22,7 +21,7 @@ def load_demo_df():
 
 def draw_sankey(df, source, target, value, remove_labels):
     flows_clean = [x for x in df[[source, target, value]].itertuples(index=False, name=None) if all(x)]
-    rcParams['font.family'] = 'Arial'
+     plt.rcParams['font.family'] = 'Arial'
     diagram = Sankey(
         flows=flows_clean,
         cmap=plt.get_cmap(st.session_state.color),
