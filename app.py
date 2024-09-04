@@ -27,7 +27,8 @@ def draw_sankey(df, source, target, value, remove_labels):
     # Calculate a reasonable figure size based on the number of flows or nodes
     num_flows = len(flows_clean)
     num_nodes = len(set(df_filtered[source]).union(df_filtered[target]))
-    
+
+    st.write(f'flows:{numflows}, nodes: {num_nodes}')
     # Use a size that scales with the number of nodes or flows
     fig_width = max(12, num_nodes * 1.5)
     fig_height = max(6, num_flows / 5)
