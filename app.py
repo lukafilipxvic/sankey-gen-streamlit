@@ -29,8 +29,8 @@ def draw_sankey(df, source, target, value, remove_labels):
     num_nodes = len(set(df_filtered[source]).union(df_filtered[target]))
     
     # Use a size that scales with the number of nodes or flows
-    fig_width = session_state.chart_width
-    fig_height = session_state.chart_height
+    fig_width = st.session_state.chart_width
+    fig_height = st.session_state.chart_height
     
     plt.figure(figsize=(fig_width, fig_height))
     
