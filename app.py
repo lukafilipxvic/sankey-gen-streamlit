@@ -20,7 +20,10 @@ def load_demo_df():
     )
 
 def draw_sankey(df, source, target, value, remove_labels):
-    flows_clean = [x for x in df[[source, target, value]].itertuples(index=False, name=None) if all(x)]
+    # Filter out rows where the source and target are the same
+    df_filtered = df[df[source] != df[target]]
+    flows_clean = [x for x in df_filtered[[source, target, value]].itertuples(index=False, name=None) if all(x)]
+    
     plt.rcParams['font.family'] = 'Arial'
     diagram = Sankey(
         flows=flows_clean,
@@ -30,9 +33,9 @@ def draw_sankey(df, source, target, value, remove_labels):
         flow_opts={"curvature": st.session_state.curvature / 10.0},
     )
 
-    for row in df[target]:
-            node = diagram.find_node(row)[0]
-            node.label_pos = 'right'
+    for row in df_filtered[target].unique():
+        node = diagram.find_node(row)[0]
+        node.label_pos = 'right'
         
     _, col2, _ = st.columns([1, 7, 1])
     with col2:
@@ -81,3 +84,4 @@ if source_col and target_col and value_col:
 
     if "image" in st.session_state and st.session_state.image:
         download_button_placeholder.download_button("Download Diagram", data=st.session_state.image, file_name=f"sankey-{timestamp()}.png", mime="image/png")
+        
