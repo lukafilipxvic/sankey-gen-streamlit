@@ -30,7 +30,7 @@ def draw_sankey(df, source, target, value, remove_labels):
         flow_opts={"curvature": st.session_state.curvature / 10.0},
     )
 
-    st.write(target)
+    st.write(target_col)
     
     _, col2, _ = st.columns([1, 7, 1])
     with col2:
