@@ -21,7 +21,7 @@ def load_demo_df():
 
 def draw_sankey(df, source, target, value, remove_labels):
     flows_clean = [x for x in df[[source, target, value]].itertuples(index=False, name=None) if all(x)]
-     plt.rcParams['font.family'] = 'Arial'
+    plt.rcParams['font.family'] = 'Arial'
     diagram = Sankey(
         flows=flows_clean,
         cmap=plt.get_cmap(st.session_state.color),
