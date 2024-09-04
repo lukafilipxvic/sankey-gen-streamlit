@@ -29,11 +29,8 @@ def draw_sankey(df, source, target, value, remove_labels):
         node_opts={"label_format": '{label}' if remove_labels else '{label} - {value}', "label_opts": {"fontsize": st.session_state.font_size}},
         flow_opts={"curvature": st.session_state.curvature / 10.0},
     )
-    
-    # Set label position for all target nodes
-    for node in diagram.nodes:
-        if node.name in df[target].unique():  # Check if the node is a target node
-            node.label_pos = 'right'
+
+    st.write(target)
     
     _, col2, _ = st.columns([1, 7, 1])
     with col2:
