@@ -75,7 +75,7 @@ st.sidebar.selectbox("Color Palette", options=["tab10", "tab20", "Pastel1", "Pas
 st.sidebar.selectbox("Flow Color Mode", options=["source", "dest"], key="flow_color_mode")
 remove_labels = st.sidebar.checkbox("Remove Numbers", value=False)
 
-st.sidebar.number_input("Chart Width", 9, key="chart_width")
+st.sidebar.number_input("Chart Width", 16, key="chart_width")
 st.sidebar.number_input("Chart Height", 9, key="chart_height")
 
 st.sidebar.markdown("---")  
