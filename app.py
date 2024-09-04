@@ -29,8 +29,8 @@ def draw_sankey(df, source, target, value, remove_labels):
     num_nodes = len(set(df_filtered[source]).union(df_filtered[target]))
     
     # Use a size that scales with the number of nodes or flows
-    fig_width = 16
-    fig_height = max(9, num_nodes / 6)
+    fig_width = session_state.chart_width
+    fig_height = session_state.chart_height
     
     plt.figure(figsize=(fig_width, fig_height))
     
@@ -74,8 +74,12 @@ st.sidebar.number_input("Curviness", 0, 10, 3, 1, key="curvature")
 st.sidebar.selectbox("Color Palette", options=["tab10", "tab20", "Pastel1", "Pastel2", "Set1", "Set2", "Set3", "Oranges", "plasma", "autumn"], key="color")
 st.sidebar.selectbox("Flow Color Mode", options=["source", "dest"], key="flow_color_mode")
 remove_labels = st.sidebar.checkbox("Remove Numbers", value=False)
+
+st.sidebar.number_input("Chart Width", 9, key="chart_width")
+st.sidebar.number_input("Chart Height", 9, key="chart_height")
+
 st.sidebar.markdown("---")  
-st.sidebar.markdown("**[Luka Filipovic](https://lukafilipovic.com/)**")
+st.sidebar.markdown("**[Luka Filipovic](https://lukafilipovic.com)**")
 
 col1, col2, col3, col4 = st.columns(4)
 
