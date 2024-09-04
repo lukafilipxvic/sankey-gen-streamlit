@@ -24,6 +24,16 @@ def draw_sankey(df, source, target, value, remove_labels):
     df_filtered = df[df[source] != df[target]]
     flows_clean = [x for x in df_filtered[[source, target, value]].itertuples(index=False, name=None) if all(x)]
     
+    # Calculate a reasonable figure size based on the number of flows or nodes
+    num_flows = len(flows_clean)
+    num_nodes = len(set(df_filtered[source]).union(df_filtered[target]))
+    
+    # Use a size that scales with the number of nodes or flows
+    fig_width = max(12, num_nodes * 1.5)
+    fig_height = max(6, num_flows / 5)
+    
+    plt.figure(figsize=(fig_width, fig_height))
+    
     plt.rcParams['font.family'] = 'Arial'
     diagram = Sankey(
         flows=flows_clean,
@@ -42,7 +52,8 @@ def draw_sankey(df, source, target, value, remove_labels):
         diagram.draw()
         st.pyplot(plt)
         img = io.BytesIO()
-        plt.savefig(img, format="png")
+        plt.savefig(img, format="png", bbox_inches="tight")  # Use bbox_inches="tight" to ensure no clipping
+        plt.close()  # Close the figure to free memory
         st.session_state.image = img
 
 def timestamp():
