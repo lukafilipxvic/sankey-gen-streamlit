@@ -30,10 +30,8 @@ def draw_sankey(df, source, target, value, remove_labels):
         flow_opts={"curvature": st.session_state.curvature / 10.0},
     )
 
-    for target in df[target]:
-        result = diagram.find_node(target)[0]
-        if result:  # Ensure result is not empty or None
-            node = result[0]
+    for row in df[target]:
+            node = diagram.find_node(row)[0]
             node.label_pos = 'right'
         
     _, col2, _ = st.columns([1, 7, 1])
